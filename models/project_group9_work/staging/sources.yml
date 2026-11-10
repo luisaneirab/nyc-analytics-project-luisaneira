@@ -10,4 +10,4 @@ sources:
           NYC 311 service requests for idling and double parking.
       - name: source_parking_camera_violations
         description: |
-          NYC DOF idling and double parking.
+          NYC DOF for idling and double parking.
