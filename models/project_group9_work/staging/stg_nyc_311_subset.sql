@@ -37,7 +37,7 @@ cleaned AS (
        CAST(closed_date AS TIMESTAMP) AS closed_date,
 
        -- Request details
-       CAST(agency AS STRING) AS agency,
+       CAST(agency AS STRING) AS agency_initials,
        CAST(agency_name AS STRING) AS agency_name,
        CAST(complaint_type AS STRING) AS complaint_type,
        CAST(descriptor AS STRING) AS descriptor,
