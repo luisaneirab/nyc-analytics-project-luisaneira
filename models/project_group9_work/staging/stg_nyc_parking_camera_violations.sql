@@ -9,10 +9,11 @@ cleaned AS (
     SELECT
         -- Get all columns from source, except ones we're transforming below
         -- To do cleaning on them or explicitly cast them as types just in case
+        -- Passing through unchanged via *: license_type, violation_status
+        -- (already strings in the raw data, no renaming needed)
         * EXCEPT (
             summons_number,
             plate,
-            license_type,
             state,
             issue_date,
             violation_time,
@@ -26,10 +27,9 @@ cleaned AS (
             payment_amount,
             amount_due,
             county,
-            violation,
-            violation_status
+            violation
         ),
-
+        
         -- Identifiers
         CAST(summons_number AS STRING) AS summons_number,
 
@@ -63,7 +63,6 @@ cleaned AS (
         -- Details
         CAST(issuing_agency AS STRING) AS agency_name,
         CAST(plate AS STRING) AS license_plate_number,
-        CAST(license_type AS STRING) AS license_type,
         CAST(state AS STRING) AS license_state,
 
         -- Location - standardized borough to match 311 staging
@@ -97,7 +96,6 @@ cleaned AS (
 
         -- Violation details
         CAST(violation AS STRING) AS violation_type,
-        CAST(violation_status AS STRING) AS violation_status,
 
         -- Metadata
         CURRENT_TIMESTAMP() AS _stg_loaded_at
