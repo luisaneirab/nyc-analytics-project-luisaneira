@@ -1,5 +1,6 @@
--- Agency dimension shared by both data sources
--- Grain: one row per distinct  agency
+-- Agency dimension shared by 311 service requests and parking/camera violations
+-- Grain: one row per distinct agency
+-- Parking agency names are standardized in staging to match 311 values
 
 WITH stg_311 AS (
     SELECT * FROM {{ ref('stg_nyc_311_subset') }}
@@ -32,6 +33,7 @@ agency_dimension AS (
 
 ),
 
+-- Null placeholder row: fact rows with no agency map to this key
 null_placeholder AS (
 
     SELECT
@@ -39,3 +41,7 @@ null_placeholder AS (
         CAST(NULL AS STRING) AS agency_name
 
 )
+
+SELECT * FROM agency_dimension
+UNION ALL
+SELECT * FROM null_placeholder
