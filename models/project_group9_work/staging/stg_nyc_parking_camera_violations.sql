@@ -60,10 +60,41 @@ cleaned AS (
             ELSE NULL
         END AS violation_time,
 
-        -- Details
-        CAST(issuing_agency AS STRING) AS agency_name,
+        -- License details
         CAST(plate AS STRING) AS license_plate_number,
         CAST(state AS STRING) AS license_state,
+        
+        -- Agency - standardized names; NYPD matches 311 values for the conformed agency dimension
+        CASE UPPER(TRIM(issuing_agency))
+            WHEN 'POLICE DEPARTMENT' THEN 'New York City Police Department'
+            WHEN 'TRAFFIC' THEN 'New York City Police Department'  -- NYPD traffic enforcement agents (team decision: merged)
+            WHEN 'DEPARTMENT OF SANITATION' THEN 'Department of Sanitation'
+            WHEN 'PARKS DEPARTMENT' THEN 'Department of Parks and Recreation'
+            WHEN 'FIRE DEPARTMENT' THEN 'Fire Department of New York'
+            WHEN 'TAXI AND LIMOUSINE COMMISSION' THEN 'Taxi and Limousine Commission'
+            WHEN 'HOUSING AUTHORITY' THEN 'New York City Housing Authority'
+            WHEN 'DEPARTMENT OF CORRECTION' THEN 'Department of Correction'
+            WHEN 'TRANSIT AUTHORITY' THEN 'NYC Transit Authority'
+            WHEN 'NYC TRANSIT AUTHORITY MANAGERS' THEN 'NYC Transit Authority Managers'
+            WHEN 'CON RAIL' THEN 'Conrail'
+            WHEN 'NYS PARKS POLICE' THEN 'NYS Parks Police'
+            WHEN 'PARKING CONTROL UNIT' THEN 'Parking Control Unit'
+            WHEN 'NYS COURT OFFICERS' THEN 'NYS Court Officers'
+            WHEN 'ROOSEVELT ISLAND SECURITY' THEN 'Roosevelt Island Security'
+            WHEN 'HEALTH AND HOSPITAL CORP. POLICE' THEN 'Health and Hospitals Corp. Police'
+            WHEN 'PORT AUTHORITY' THEN 'Port Authority'
+            WHEN 'BOARD OF ESTIMATE' THEN 'Board of Estimate'
+            WHEN 'NYC OFFICE OF THE SHERIFF' THEN 'NYC Office of the Sheriff'
+            WHEN 'LONG ISLAND RAILROAD' THEN 'Long Island Rail Road'
+            WHEN 'HEALTH DEPARTMENT POLICE' THEN 'Health Department Police'
+            WHEN 'SEA GATE ASSOCIATION POLICE' THEN 'Sea Gate Association Police'
+            WHEN 'O M R D D' THEN 'OMRDD'
+            WHEN 'TRIBOROUGH BRIDGE AND TUNNEL POLICE' THEN 'Triborough Bridge and Tunnel Police'
+            WHEN 'METRO NORTH RAILROAD POLICE' THEN 'Metro-North Railroad Police'
+            WHEN 'AMTRAK RAILROAD POLICE' THEN 'Amtrak Railroad Police'
+            WHEN 'OTHER/UNKNOWN AGENCIES' THEN NULL  -- maps to the -1 placeholder in the agency dimension
+            ELSE TRIM(issuing_agency)  -- pass through any new value instead of losing it
+        END AS agency_name,
 
         -- Location - standardized borough to match 311 staging
         CASE
