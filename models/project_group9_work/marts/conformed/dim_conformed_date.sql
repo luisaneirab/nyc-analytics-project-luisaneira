@@ -23,11 +23,6 @@ all_dates AS (
     FROM stg_311
     WHERE closed_date IS NOT NULL
 
-    UNION DISTINCT
-
-    SELECT DISTINCT CAST(due_date AS DATE) AS full_date
-    FROM stg_311
-    WHERE due_date IS NOT NULL
 
     UNION DISTINCT 
 
