@@ -28,13 +28,13 @@ enriched AS (
         CASE
             WHEN LOWER(descriptor) LIKE '%idling%'
                 OR LOWER(complaint_type) LIKE '%idling%'
-                THEN 'idling'
+                THEN 'Idling'
 
             WHEN LOWER(descriptor) LIKE '%double park%'
                 OR LOWER(complaint_type) LIKE '%double park%'
-                THEN 'double parking'
+                THEN 'Double Parking'
 
-            ELSE 'other'
+            ELSE 'Other'
         END AS complaint_category
 
     FROM distinct_complaint_types

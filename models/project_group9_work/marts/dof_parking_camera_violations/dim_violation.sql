@@ -23,9 +23,9 @@ enriched AS (
         -- Derived category based on keywords (case insensitive)
         -- Values must match complaint_category in dim_complaint_type
         CASE
-            WHEN LOWER(violation_type) LIKE '%idling%' THEN 'idling'
-            WHEN LOWER(violation_type) LIKE '%double park%' THEN 'double parking'
-            ELSE 'other'
+            WHEN LOWER(violation_type) LIKE '%idling%' THEN 'Idling'
+            WHEN LOWER(violation_type) LIKE '%double park%' THEN 'Double Parking'
+            ELSE 'Other'
         END AS violation_category
 
     FROM distinct_violations
